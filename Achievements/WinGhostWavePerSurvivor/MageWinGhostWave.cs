@@ -3,7 +3,7 @@ using RoR2.Achievements;
 
 namespace BulwarksHaunt.Achievements
 {
-	[RegisterAchievement("BulwarksHaunt_MageWinGhostWave", "Skins.Mage.BulwarksHaunt_Alt", null, null)]
+	[RegisterAchievement("BulwarksHaunt_MageWinGhostWave", "Skins.Mage.BulwarksHaunt_Alt", null, 10, null)]
 	public class MageWinGhostWave : BaseWinGhostWavePerSurvivor
 	{
 		public override BodyIndex LookUpRequiredBodyIndex()

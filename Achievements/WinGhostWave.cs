@@ -3,7 +3,7 @@ using RoR2.Achievements;
 
 namespace BulwarksHaunt.Achievements
 {
-	[RegisterAchievement("BulwarksHaunt_WinGhostWave", "BulwarksHaunt_SwordUnleashed", null, typeof(Server))]
+	[RegisterAchievement("BulwarksHaunt_WinGhostWave", "BulwarksHaunt_SwordUnleashed", null, 5, typeof(Server))]
 	public class WinGhostWave : BaseAchievement
 	{
 		public override void OnInstall()

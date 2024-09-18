@@ -30,7 +30,7 @@ namespace BulwarksHaunt
     {
         public const string PluginGUID = "com.themysticsword.bulwarkshaunt";
         public const string PluginName = "Bulwark's Haunt";
-        public const string PluginVersion = "1.1.4";
+        public const string PluginVersion = "1.1.5";
 
         public static System.Reflection.Assembly executingAssembly;
         internal static System.Type declaringType;
@@ -75,8 +75,7 @@ namespace BulwarksHaunt
 
             var pluginInfos = BepInEx.Bootstrap.Chainloader.PluginInfos;
 
-            if (pluginInfos.ContainsKey("com.TeamMoonstorm.MoonstormSharedUtils"))
-                AddSceneBlacklist();
+            // if (pluginInfos.ContainsKey("com.TeamMoonstorm.MoonstormSharedUtils")) AddSceneBlacklist();
 
             if (pluginInfos.ContainsKey("com.KingEnderBrine.ProperSave"))
                 ProperSaveSupport.Init();
@@ -90,11 +89,13 @@ namespace BulwarksHaunt
             }
         }
 
+        /*
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         private void AddSceneBlacklist()
         {
             Moonstorm.Components.SetupWeatherController.blacklistedScenes.Add("BulwarksHaunt_GhostWave");
         }
+        */
     }
 
     public class BulwarksHauntContent : IContentPackProvider

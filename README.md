@@ -1,3 +1,9 @@
+# !! NOTICE !!
+this mod is part of a port of [TheMysticSword](https://themysticsword.neocities.org/)'s family of MIT-Licensed mods for SotS. This will be taken down(deprecated) once mystic comes back and wishes to continue the project herself.
+
+---
+<br><br>
+
 # Bulwark's Haunt
 Adds an alternate ending.  
 To reach it, find the Crystalline Blade on Sky Meadow and bring it to the Obelisk.  

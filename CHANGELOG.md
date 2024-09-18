@@ -1,3 +1,5 @@
+## 1.1.5
+* fixes for SotS
 ## 1.1.4:
 * Ghost Bonus Stats can now be configured
 * Reduced ghost bonus armor from 40 to 20

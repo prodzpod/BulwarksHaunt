@@ -157,6 +157,7 @@ namespace BulwarksHaunt.Items
         private void SceneDirector_PopulateScene(On.RoR2.SceneDirector.orig_PopulateScene orig, SceneDirector self)
         {
             orig(self);
+            BulwarksHauntPlugin.logger.LogInfo(SceneCatalog.GetSceneDefForCurrentScene().baseSceneName);
             if (SceneCatalog.GetSceneDefForCurrentScene().baseSceneName == "skymeadow")
             {
                 GameObject obj = Object.Instantiate(swordObjPrefab, new Vector3(35.21518f, 5.219295f - 0.8f, 263.5193f), Quaternion.Euler(new Vector3(0f, 90f, 0f)));
@@ -209,6 +210,11 @@ namespace BulwarksHaunt.Items
             public bool ShouldIgnoreSpherecastForInteractibility(Interactor activator)
             {
                 return false;
+            }
+
+            public bool ShouldProximityHighlight()
+            {
+                return true;
             }
 
             public bool ShouldShowOnScanner()

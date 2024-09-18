@@ -1,12 +1,12 @@
 {
-  "name": "BulwarksHaunt",
-  "version_number": "1.1.4",
-  "website_url": "https://github.com/TheMysticSword/BulwarksHaunt",
+  "name": "RealerBulwarksHaunt",
+  "version_number": "1.1.5",
+  "website_url": "https://github.com/prodzpod/BulwarksHaunt",
   "description": "Adds an alternate Obelisk ending.",
   "dependencies": [
     "bbepis-BepInExPack-5.4.1905",
     "RiskofThunder-HookGenPatcher-1.2.3",
-    "TheMysticSword-MysticsRisky2Utils-2.0.15",
+    "prodzpod-RealerMysticsRisky2Utils-2.0.16",
     "RiskofThunder-R2API_Core-5.0.10",
     "RiskofThunder-R2API_Language-1.0.1",
     "RiskofThunder-R2API_Networking-1.0.2",
