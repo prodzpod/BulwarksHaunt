@@ -148,7 +148,7 @@ namespace BulwarksHaunt.Items
                 var unlockableName = "BulwarksHaunt_SwordUnleashed";
                 if (itemDef == BulwarksHauntContent.Items.BulwarksHaunt_Sword && localUser.userProfile.HasUnlockable(unlockableName) && swordCanBeUnleashed)
                     return false;
-                if ((itemDef == BulwarksHauntContent.Items.BulwarksHaunt_SwordUnleashed && !localUser.userProfile.HasUnlockable(unlockableName) && swordCanBeUnleashed) || !swordCanBeUnleashed)
+                if (itemDef == BulwarksHauntContent.Items.BulwarksHaunt_SwordUnleashed && ((!localUser.userProfile.HasUnlockable(unlockableName) && swordCanBeUnleashed) || !swordCanBeUnleashed))
                     return false;
             }
             return result;
