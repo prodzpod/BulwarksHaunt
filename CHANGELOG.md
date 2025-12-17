@@ -1,3 +1,5 @@
+## 1.1.7:
+* fixes for AC
 ## 1.1.6:
 * fixed logbook when sword is disabled
 ## 1.1.5

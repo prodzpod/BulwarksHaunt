@@ -28,7 +28,7 @@ namespace BulwarksHaunt.Items
 
         private float HealthComponent_Heal(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen)
         {
-            if (self.body && self.body.inventory && self.body.inventory.GetItemCount(itemDef) > 0) return 0;
+            if (self.body && self.body.inventory && self.body.inventory.GetItemCountEffective(itemDef) > 0) return 0;
             return orig(self, amount, procChainMask, nonRegen);
         }
 
@@ -38,7 +38,7 @@ namespace BulwarksHaunt.Items
             if (bodyObject)
             {
                 var characterBody = bodyObject.GetComponent<CharacterBody>();
-                if (characterBody && characterBody.inventory && characterBody.inventory.GetItemCount(itemDef) > 0)
+                if (characterBody && characterBody.inventory && characterBody.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     result = Language.GetStringFormatted("BODY_MODIFIER_BULWARKSHAUNT_RECRUITED", result);
                 }
@@ -50,14 +50,14 @@ namespace BulwarksHaunt.Items
         {
             if (sender.inventory)
             {
-                var itemCount = sender.inventory.GetItemCount(itemDef);
+                var itemCount = sender.inventory.GetItemCountEffective(itemDef);
                 if (itemCount > 0)
                 {
                     args.armorAdd += 40f;
                     args.damageMultAdd += 3f;
                     args.attackSpeedMultAdd += 0.5f;
                     args.moveSpeedMultAdd += 0.25f;
-                    args.cooldownReductionAdd += 0.2f;
+                    args.allSkills.cooldownFlatReduction += 0.2f;
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace BulwarksHaunt.Items
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {
             orig(self);
-            var itemCount = self.inventory.GetItemCount(itemDef);
+            var itemCount = self.inventory.GetItemCountEffective(itemDef);
             self.AddItemBehavior<BulwarksHauntRecruitedMonsterOverlayController>(itemCount);
         }
 
@@ -89,7 +89,7 @@ namespace BulwarksHaunt.Items
 
             public void OnDestroy()
             {
-                if (model && body && body.inventory && body.inventory.GetItemCount(BulwarksHauntContent.Items.BulwarksHaunt_GhostFury) <= 0)
+                if (model && body && body.inventory && body.inventory.GetItemCountEffective(BulwarksHauntContent.Items.BulwarksHaunt_GhostFury) <= 0)
                 {
                     var matHelper = model.GetComponent<BulwarksHauntRecruitedMonsterModelMaterialHelper>();
                     if (matHelper)

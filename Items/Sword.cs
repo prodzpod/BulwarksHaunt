@@ -82,8 +82,8 @@ namespace BulwarksHaunt.Items
                 {
                     if (master.teamIndex == TeamIndex.Player)
                     {
-                        master.inventory.RemoveItem(itemDef, master.inventory.GetItemCount(itemDef));
-                        master.inventory.RemoveItem(BulwarksHauntContent.Items.BulwarksHaunt_SwordUnleashed, master.inventory.GetItemCount(BulwarksHauntContent.Items.BulwarksHaunt_SwordUnleashed));
+                        master.inventory.RemoveItemPermanent(itemDef, master.inventory.GetItemCountEffective(itemDef));
+                        master.inventory.RemoveItemPermanent(BulwarksHauntContent.Items.BulwarksHaunt_SwordUnleashed, master.inventory.GetItemCountEffective(BulwarksHauntContent.Items.BulwarksHaunt_SwordUnleashed));
                     }
                 }
                 self.outer.SetNextState(new TransitionToGhostWave());
@@ -199,8 +199,8 @@ namespace BulwarksHaunt.Items
                         }
                     }
 
-                    inventory.GiveItem(item);
-                    GenericPickupController.SendPickupMessage(inventory.GetComponent<CharacterMaster>(), PickupCatalog.FindPickupIndex(item.itemIndex));
+                    inventory.GiveItemPermanent(item);
+                    GenericPickupController.SendPickupMessage(inventory.GetComponent<CharacterMaster>(), new UniquePickup() { pickupIndex = PickupCatalog.FindPickupIndex(item.itemIndex) });
 
                     if (NetworkServer.active) NetworkServer.UnSpawn(gameObject);
                     Destroy(gameObject);

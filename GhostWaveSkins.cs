@@ -221,17 +221,28 @@ namespace BulwarksHaunt
             skinDef.unlockableDef.achievementIcon = skinDef.icon;
             BulwarksHauntContent.Resources.unlockableDefs.Add(skinDef.unlockableDef);
             skinDef.rootObject = baseSkinDef.rootObject;
-            skinDef.rendererInfos = new CharacterModel.RendererInfo[] { };
-            foreach (var rendererInfo in baseSkinDef.rendererInfos)
+            var skinDefParams = GetParams(baseSkinDef);
+            skinDef.skinDefParams = new SkinDefParams() {
+                gameObjectActivations = skinDefParams.gameObjectActivations,
+                lightReplacements = skinDefParams.lightReplacements,
+                meshReplacements = skinDefParams.meshReplacements,
+                minionSkinReplacements = skinDefParams.minionSkinReplacements,
+                projectileGhostReplacements = skinDefParams.projectileGhostReplacements,
+                rendererInfos = new CharacterModel.RendererInfo[] { },
+            };
+            foreach (var rendererInfo in skinDefParams.rendererInfos)
             {
                 var newRendererInfo = new CharacterModel.RendererInfo()
                 {
                     renderer = rendererInfo.renderer,
                     defaultMaterial = rendererInfo.defaultMaterial,
                     defaultShadowCastingMode = rendererInfo.defaultShadowCastingMode,
-                    ignoreOverlays = rendererInfo.ignoreOverlays
+                    ignoreOverlays = rendererInfo.ignoreOverlays,
+                    defaultMaterialAddress = rendererInfo.defaultMaterialAddress,
+                    hideOnDeath = rendererInfo.hideOnDeath,
+                    ignoresMaterialOverrides = rendererInfo.ignoresMaterialOverrides
                 };
-                HG.ArrayUtils.ArrayAppend(ref skinDef.rendererInfos, newRendererInfo);
+                HG.ArrayUtils.ArrayAppend(ref skinDef.skinDefParams.rendererInfos, newRendererInfo);
             }
 
             var modelLocator = bodyPrefab.GetComponent<ModelLocator>();
@@ -253,7 +264,12 @@ namespace BulwarksHaunt
 
         public static void ReplaceRendererInfoOnSkin(SkinDef skinDef, int origTextureRendererInfoIndex, int[] rendererInfoIndices, Texture newTexture = null, Color newEmissionColor = default(Color), Texture newEmissionTexture = null)
         {
-            var mat = Material.Instantiate(skinDef.rendererInfos[origTextureRendererInfoIndex].defaultMaterial);
+            var skinDefParams = GetParams(skinDef);
+            var ri = skinDefParams.rendererInfos[origTextureRendererInfoIndex];
+            Material _mat = null;
+            if (ri.defaultMaterial) _mat = ri.defaultMaterial;
+            else if (ri.defaultMaterialAddress != null) _mat = ri.defaultMaterialAddress.LoadAssetAsync().WaitForCompletion();
+            var mat = Material.Instantiate(_mat);
             if (newTexture != null) mat.SetTexture("_MainTex", newTexture);
             if (!Color.Equals(newEmissionColor, default(Color)))
             {
@@ -263,14 +279,23 @@ namespace BulwarksHaunt
             if (newEmissionTexture != null) mat.SetTexture("_EmTex", newEmissionTexture);
             foreach (var rendererInfoIndex in rendererInfoIndices)
             {
-                skinDef.rendererInfos[rendererInfoIndex] = new CharacterModel.RendererInfo
+                skinDefParams.rendererInfos[rendererInfoIndex] = new CharacterModel.RendererInfo
                 {
-                    renderer = skinDef.rendererInfos[rendererInfoIndex].renderer,
+                    renderer = skinDefParams.rendererInfos[rendererInfoIndex].renderer,
                     defaultMaterial = mat,
-                    defaultShadowCastingMode = skinDef.rendererInfos[rendererInfoIndex].defaultShadowCastingMode,
-                    ignoreOverlays = skinDef.rendererInfos[rendererInfoIndex].ignoreOverlays
+                    defaultShadowCastingMode = skinDefParams.rendererInfos[rendererInfoIndex].defaultShadowCastingMode,
+                    ignoreOverlays = skinDefParams.rendererInfos[rendererInfoIndex].ignoreOverlays
                 };
             }
+        }
+
+        public static SkinDefParams GetParams(SkinDef skinDef)
+        {
+            if (skinDef.skinDefParams) return skinDef.skinDefParams;
+            if (skinDef.optimizedSkinDefParams) return skinDef.optimizedSkinDefParams;
+            if (skinDef.skinDefParamsAddress != null) return skinDef.skinDefParamsAddress.LoadAssetAsync().WaitForCompletion();
+            if (skinDef.optimizedSkinDefParamsAddress != null) return skinDef.optimizedSkinDefParamsAddress.LoadAssetAsync().WaitForCompletion();
+            return null;
         }
     }
 }

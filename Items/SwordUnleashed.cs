@@ -117,7 +117,7 @@ namespace BulwarksHaunt.Items
             orig(self);
             if (NetworkServer.active && self.inventory && self.teamComponent)
             {
-                var itemCount = self.inventory.GetItemCount(itemDef);
+                var itemCount = self.inventory.GetItemCountEffective(itemDef);
                 if (itemCount > 0)
                 {
                     var currentPosition = self.GetAimRay().origin;
@@ -152,7 +152,7 @@ namespace BulwarksHaunt.Items
                                         {
                                             hijackHelper = body.gameObject.AddComponent<BulwarksHauntSwordTeamHijack>();
                                             hijackHelper.oldTeamIndex = teamIndex;
-                                            if (body.inventory) body.inventory.GiveItem(BulwarksHauntContent.Items.BulwarksHaunt_RecruitedMonster);
+                                            if (body.inventory) body.inventory.GiveItemPermanent(BulwarksHauntContent.Items.BulwarksHaunt_RecruitedMonster);
                                         }
                                         hijackHelper.timer = Mathf.Max(hijackHelper.timer, duration + durationPerStack * (float)(itemCount - 1));
                                         hijackHelper.SetTeam(myTeamIndex);
@@ -203,7 +203,7 @@ namespace BulwarksHaunt.Items
             public void Undo()
             {
                 SetTeam(oldTeamIndex);
-                if (body.inventory) body.inventory.RemoveItem(BulwarksHauntContent.Items.BulwarksHaunt_RecruitedMonster);
+                if (body.inventory) body.inventory.RemoveItemPermanent(BulwarksHauntContent.Items.BulwarksHaunt_RecruitedMonster);
             }
 
             public void SetTeam(TeamIndex teamIndex)

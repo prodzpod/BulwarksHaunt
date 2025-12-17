@@ -702,7 +702,7 @@ namespace BulwarksHaunt
                         {
                             foreach (var itemIndex in damageReport.victimBody.inventory.itemAcquisitionOrder)
                             {
-                                var itemCount = damageReport.victimBody.inventory.itemStacks[(int)itemIndex];
+                                var itemCount = damageReport.victimBody.inventory.GetItemCountEffective(itemIndex);
                                 killedEnemyData.inventory.Add(new ItemCountPair() { itemDef = ItemCatalog.GetItemDef(itemIndex), count = itemCount });
                             }
                         }
@@ -831,7 +831,7 @@ namespace BulwarksHaunt
 
             public void HandleBodyOutOfBounds(CharacterBody body)
             {
-                if ((body.teamComponent && body.teamComponent.teamIndex == TeamIndex.Player) || (body.inventory && body.inventory.GetItemCount(RoR2Content.Items.TeleportWhenOob) > 0))
+                if ((body.teamComponent && body.teamComponent.teamIndex == TeamIndex.Player) || (body.inventory && body.inventory.GetItemCountEffective(RoR2Content.Items.TeleportWhenOob) > 0))
                 {
                     Vector3 teleportDestination = Run.instance.FindSafeTeleportPosition(body, null, 0f, 0f);
                     TeleportHelper.TeleportBody(body, teleportDestination);
@@ -1289,9 +1289,9 @@ namespace BulwarksHaunt
                                 var master = spawnResult.spawnedInstance.GetComponent<CharacterMaster>();
                                 aliveEnemies.Add(master);
 
-                                if (master.inventory && master.inventory.GetItemCount(BulwarksHauntContent.Items.BulwarksHaunt_GhostFury) <= 0)
+                                if (master.inventory && master.inventory.GetItemCountEffective(BulwarksHauntContent.Items.BulwarksHaunt_GhostFury) <= 0)
                                 {
-                                    master.inventory.GiveItem(BulwarksHauntContent.Items.BulwarksHaunt_GhostFury);
+                                    master.inventory.GiveItemPermanent(BulwarksHauntContent.Items.BulwarksHaunt_GhostFury);
                                 }
                             }
                         };

@@ -88,7 +88,7 @@ namespace BulwarksHaunt.Items
             if (bodyObject)
             {
                 var characterBody = bodyObject.GetComponent<CharacterBody>();
-                if (characterBody && characterBody.inventory && characterBody.inventory.GetItemCount(itemDef) > 0)
+                if (characterBody && characterBody.inventory && characterBody.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     result = Language.GetStringFormatted("BODY_MODIFIER_BULWARKSHAUNT_GHOSTFURY", result);
                 }
@@ -100,14 +100,14 @@ namespace BulwarksHaunt.Items
         {
             if (sender.inventory)
             {
-                var itemCount = sender.inventory.GetItemCount(itemDef);
+                var itemCount = sender.inventory.GetItemCountEffective(itemDef);
                 if (itemCount > 0)
                 {
                     args.baseHealthAdd += baseHealth + baseHealthPerLevel * (sender.level - 1f);
                     args.armorAdd += armor;
                     args.attackSpeedMultAdd += attackSpeed / 100f;
                     args.moveSpeedMultAdd += moveSpeed / 100f;
-                    args.cooldownReductionAdd += cooldownReduction / 100f;
+                    args.allSkills.cooldownFlatReduction += cooldownReduction / 100f;
                 }
             }
         }
@@ -115,8 +115,8 @@ namespace BulwarksHaunt.Items
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {
             orig(self);
-            var itemCount = self.inventory.GetItemCount(itemDef);
-            if (self.inventory.GetItemCount(RoR2Content.Items.Ghost) > 0) itemCount = 0;
+            var itemCount = self.inventory.GetItemCountEffective(itemDef);
+            if (self.inventory.GetItemCountEffective(RoR2Content.Items.Ghost) > 0) itemCount = 0;
             self.AddItemBehavior<BulwarksHauntGhostFuryController>(itemCount);
         }
 
@@ -141,7 +141,7 @@ namespace BulwarksHaunt.Items
 
             public void OnDestroy()
             {
-                if (model && body && body.inventory && body.inventory.GetItemCount(BulwarksHauntContent.Items.BulwarksHaunt_GhostFury) <= 0)
+                if (model && body && body.inventory && body.inventory.GetItemCountEffective(BulwarksHauntContent.Items.BulwarksHaunt_GhostFury) <= 0)
                 {
                     var matHelper = model.GetComponent<BulwarksHauntGhostFuryModelMaterialHelper>();
                     if (matHelper)
